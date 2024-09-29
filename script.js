@@ -190,7 +190,7 @@ function getCompletionText(completion, taskName) {
     }
 }
 
-// Function to display energy bar with animation and percentage text
+// Function to display energy bar with animation and synchronized percentage
 function showEnergyBar(energy) {
     const energyBar = document.getElementById('energy-bar-fill');
     const energyPercentage = document.getElementById('energy-bar-percentage');
@@ -199,16 +199,18 @@ function showEnergyBar(energy) {
     energyPercentage.innerText = '0%'; // Reset the percentage
 
     let currentEnergy = 0; // Initialize the current energy to 0
+    const fillDuration = 5000; // Total duration in milliseconds (5 seconds)
+    const stepTime = Math.round(fillDuration / energy); // Calculate time for each percent increment
 
     const interval = setInterval(() => {
         if (currentEnergy < energy) {
             currentEnergy++;
-            energyBar.style.width = `${currentEnergy}%`;
-            energyPercentage.innerText = `${currentEnergy}%`;
+            energyBar.style.width = `${currentEnergy}%`; // Update the width of the bar
+            energyPercentage.innerText = `${currentEnergy}%`; // Update the percentage display
         } else {
             clearInterval(interval); // Stop the interval once the desired energy is reached
         }
-    }, 50); // Control the speed of the bar and percentage increase
+    }, stepTime); // Control the speed of the bar and percentage increase
 }
 
 // Function to generate a motivational message based on task completion and energy
