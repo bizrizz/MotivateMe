@@ -87,6 +87,29 @@ input[type="number"] {
     padding: 5px;
 }
 
+.motivation-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.avatar {
+    width: 80px; /* Adjust avatar size as needed */
+    margin: 0 10px; /* Space between the avatar and the message */
+}
+
+#motivation-message {
+    font-size: 26px; /* Increase font size */
+    font-weight: bold; /* Make the text stand out */
+    flex: 1; /* Ensure the message takes up available space */
+    color: white;
+}
+
 /* Confetti canvas styling */
 canvas#confetti-canvas {
     position: absolute;
@@ -97,3 +120,5 @@ canvas#confetti-canvas {
     z-index: 1; /* Confetti stays behind other elements */
     pointer-events: none; /* Ensure confetti doesn't block interactions */
 }
+
+
