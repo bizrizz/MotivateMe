@@ -3,21 +3,33 @@ let selectedTasks = [];
 // Function to add tasks
 async function addTask() {
     const taskInput = document.getElementById("task-input").value.trim();
-    if (taskInput !== "") {
-        let taskCategory = await categorizeTaskWithAI(taskInput); // AI-based task categorization
-        selectedTasks.push({ name: taskInput, score: 3, completion: 0, category: taskCategory });
-
-        document.getElementById("task-input").value = ""; // Clear input field
-
-        // Change the button text after the first task is added
-        document.getElementById("submit-task-btn").innerText = "Add Another Task";
-        document.getElementById("next-btn").style.display = "block";
-
-        renderTaskList(); // Render the updated task list
+    
+    // Check if the input is empty
+    if (taskInput === "") {
+        alert("Please enter a task.");
+        return; // Exit function if task is empty
     }
+
+    // AI task categorization
+    let taskCategory = await categorizeTaskWithAI(taskInput); // Categorize task using AI
+
+    // Push task into the array
+    selectedTasks.push({ name: taskInput, score: 3, completion: 0, category: taskCategory });
+
+    // Clear input field after task is added
+    document.getElementById("task-input").value = ""; 
+
+    // Change the button text to show it's ready for the next task
+    document.getElementById("submit-task-btn").innerText = "Add Another Task";
+
+    // Show the "Next" button after the first task is added
+    document.getElementById("next-btn").style.display = "block";
+
+    // Re-render the task list to show sliders and inputs
+    renderTaskList();
 }
 
-// Function to render the task list
+// Function to render task list with sliders for importance and completion inputs
 function renderTaskList() {
     const taskListDiv = document.getElementById("task-list");
     taskListDiv.innerHTML = ""; // Clear the task list before re-rendering
@@ -26,11 +38,11 @@ function renderTaskList() {
         const taskItem = document.createElement("div");
         taskItem.classList.add("task-item");
 
-        // Task Name and Category
+        // Display task name and its AI-assigned category
         const taskName = document.createElement("p");
         taskName.innerText = `${task.name} (${task.category})`;
 
-        // Slider for importance (1-5)
+        // Slider for task importance (1-5)
         const taskScoreSlider = document.createElement("input");
         taskScoreSlider.type = "range";
         taskScoreSlider.min = "1";
@@ -38,10 +50,10 @@ function renderTaskList() {
         taskScoreSlider.value = task.score;
         taskScoreSlider.oninput = function () {
             selectedTasks[index].score = taskScoreSlider.value;
-            renderTaskList(); // Refresh the task list to update the displayed score
+            renderTaskList(); // Refresh the task list to update displayed score
         };
 
-        // Input for completion percentage
+        // Input for task completion percentage (0-100%)
         const taskCompletionInput = document.createElement("input");
         taskCompletionInput.type = "number";
         taskCompletionInput.min = "0";
@@ -51,6 +63,7 @@ function renderTaskList() {
             selectedTasks[index].completion = taskCompletionInput.value;
         };
 
+        // Append elements to task item
         taskItem.appendChild(taskName);
         taskItem.appendChild(taskScoreSlider);
         taskItem.appendChild(document.createTextNode(" Importance: " + taskScoreSlider.value + "/5"));
@@ -59,26 +72,24 @@ function renderTaskList() {
         taskItem.appendChild(taskCompletionInput);
         taskItem.appendChild(document.createTextNode("%"));
 
+        // Append task item to task list div
         taskListDiv.appendChild(taskItem);
     });
 }
 
-// Move to next question (for roadblocks and positive events)
+// Function to move to next question (roadblocks and positive events)
 function nextQuestion() {
-    // Hide task input section and show roadblock/positive event section
-    document.getElementById("question-box").style.display = "none";
-    document.getElementById("extra-questions").style.display = "block";
-    document.getElementById("final-next-btn").style.display = "block";
-    document.getElementById("next-btn").style.display = "none";
+    document.getElementById("question-box").style.display = "none"; // Hide task input section
+    document.getElementById("extra-questions").style.display = "block"; // Show roadblock/positive event section
+    document.getElementById("final-next-btn").style.display = "block"; // Show submit button
+    document.getElementById("next-btn").style.display = "none"; // Hide the "Next" button
 }
 
-// Submit roadblocks and positive events, calculate motivation score
+// Submit roadblocks and positive events, then calculate motivation score
 async function submitExtraQuestions() {
-    // Get roadblocks and positive events
     const roadblocksInput = document.getElementById("roadblocks-input").value.toLowerCase();
     const positiveEventsInput = document.getElementById("positive-events-input").value.toLowerCase();
 
-    // Use AI to classify adversity and positive events
     let adversityFactor = await categorizeAdversityWithAI(roadblocksInput);
     let positiveEventBoost = await categorizePositiveEventWithAI(positiveEventsInput);
 
@@ -94,75 +105,57 @@ async function calculateMotivationScore(adversityFactor, positiveEventBoost) {
     let totalCompletion = selectedTasks.reduce((total, task) => total + parseInt(task.completion), 0) / selectedTasks.length;
     let averageScore = selectedTasks.reduce((total, task) => total + parseInt(task.score), 0) / selectedTasks.length;
 
-    // Calculate motivation score adjusted for adversity and positive events
     let motivationScore = (totalCompletion * adversityFactor * positiveEventBoost * averageScore) / 100;
-    if (motivationScore > 100) motivationScore = 100; // Cap the score at 100%
+    if (motivationScore > 100) motivationScore = 100; // Cap score at 100%
 
     document.getElementById('motivation-score').innerText = `Your Motivation Score: ${Math.round(motivationScore)}%`;
-
-    // Generate personalized motivational message
     generateMotivationalMessage(Math.round(motivationScore), selectedTasks, adversityFactor, positiveEventBoost);
 }
 
-// AI-Based task categorization (no dictionaries)
+// Function to categorize tasks using AI
 async function categorizeTaskWithAI(task) {
     const tokenizer = await transformers.AutoTokenizer.fromPretrained('distilbert-base-uncased');
     const model = await transformers.AutoModelForSequenceClassification.fromPretrained('distilbert-base-uncased-finetuned-sst-2-english');
-
     const inputs = tokenizer(task, { returnTensors: 'tf' });
     const logits = model(inputs).logits;
     const predictions = Array.from(logits.dataSync());
 
-    if (predictions[0] > 0.5) {
-        return 'Work'; // High confidence the task is work-related
-    } else if (predictions[1] > 0.5) {
-        return 'Health'; // High confidence the task is health-related
-    } else {
-        return 'Personal'; // Default to personal if unsure
-    }
+    if (predictions[0] > 0.5) return 'Work';
+    if (predictions[1] > 0.5) return 'Health';
+    return 'Personal';
 }
 
 // AI-Based adversity classification
 async function categorizeAdversityWithAI(roadblocks) {
     const tokenizer = await transformers.AutoTokenizer.fromPretrained('distilbert-base-uncased');
     const model = await transformers.AutoModelForSequenceClassification.fromPretrained('distilbert-base-uncased-finetuned-sst-2-english');
-
     const inputs = tokenizer(roadblocks, { returnTensors: 'tf' });
     const logits = model(inputs).logits;
     const predictions = Array.from(logits.dataSync());
 
-    if (predictions[0] > 0.5) {
-        return 1.3; // Severe adversity detected (e.g., sick, very tired)
-    } else if (predictions[1] > 0.5) {
-        return 1.2; // Moderate adversity (e.g., mild tiredness)
-    } else {
-        return 1.1; // Mild adversity
-    }
+    if (predictions[0] > 0.5) return 1.3;
+    if (predictions[1] > 0.5) return 1.2;
+    return 1.1;
 }
 
 // AI-Based positive event classification
 async function categorizePositiveEventWithAI(positiveEvent) {
     const tokenizer = await transformers.AutoTokenizer.fromPretrained('distilbert-base-uncased');
     const model = await transformers.AutoModelForSequenceClassification.fromPretrained('distilbert-base-uncased-finetuned-sst-2-english');
-
     const inputs = tokenizer(positiveEvent, { returnTensors: 'tf' });
     const logits = model(inputs).logits;
     const predictions = Array.from(logits.dataSync());
 
-    if (predictions[0] > 0.5) {
-        return 1.2; // Strong positive event detected (e.g., energized)
-    } else {
-        return 1.0; // No positive event boost
-    }
+    if (predictions[0] > 0.5) return 1.2;
+    return 1.0;
 }
 
-// Generate motivational message based on score and AI classification
+// Generate a motivational message based on score and AI classification
 async function generateMotivationalMessage(score, tasks, adversityFactor, positiveEventBoost) {
     const model = await transformers.AutoModelForCausalLM.fromPretrained('gpt2');
     const tokenizer = await transformers.AutoTokenizer.fromPretrained('gpt2');
 
     let taskDetails = tasks.map(task => `${task.name}: ${task.completion}% completed, ${task.score}/5 importance`).join(', ');
-
     let prompt = `The user completed ${tasks.length} tasks, including ${taskDetails}. They faced adversity (${adversityFactor}) and positive events (${positiveEventBoost}). Generate a motivational message for a ${score}% motivation score.`;
 
     const inputs = tokenizer.encode(prompt, { returnTensors: 'tf' });
