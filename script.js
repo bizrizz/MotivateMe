@@ -1,15 +1,15 @@
 let selectedTasks = [];
-let currentStep = 0;
 
 function addTask() {
     const taskInput = document.getElementById("task-input").value.trim();
     if (taskInput !== "") {
-        selectedTasks.push({ name: taskInput, score: 3, completion: 0 }); // Default score 3/5 and 0% completion
+        selectedTasks.push({ name: taskInput, score: 3, completion: 0 });
 
         document.getElementById("task-input").value = ""; // Clear input field
 
-        // Remove the "Submit Task" button after first task
-        document.getElementById("submit-task-btn").style.display = "none";
+        // Remove the "Submit Task" button after first task is added
+        document.getElementById("submit-task-btn").innerText = "Add Another Task";
+        document.getElementById("next-btn").style.display = "block";
 
         renderTaskList(); // Render task list with sliders and completion inputs
     }
@@ -35,6 +35,7 @@ function renderTaskList() {
         taskScoreSlider.value = task.score;
         taskScoreSlider.oninput = function () {
             selectedTasks[index].score = taskScoreSlider.value;
+            renderTaskList(); // Refresh the task list to update displayed score
         };
 
         // Input for completion percentage
@@ -60,13 +61,9 @@ function renderTaskList() {
 }
 
 function nextQuestion() {
-    if (currentStep < questions.length - 1) {
-        currentStep++;
-        document.getElementById("question").innerText = questions[currentStep];
-    } else {
-        document.getElementById("question-box").innerHTML = `<p>Thanks for entering your tasks! Your motivation score will be calculated.</p>`;
-        calculateMotivationScore();
-    }
+    document.getElementById("result").style.display = "block";
+    calculateMotivationScore();
+    document.getElementById("next-btn").style.display = "none"; // Hide the "Next" button after clicking
 }
 
 function calculateMotivationScore() {
@@ -74,7 +71,7 @@ function calculateMotivationScore() {
     let totalCompletion = selectedTasks.reduce((total, task) => total + parseInt(task.completion), 0) / selectedTasks.length;
     let averageScore = selectedTasks.reduce((total, task) => total + parseInt(task.score), 0) / selectedTasks.length;
 
-    // For now, we'll assume full energy and no adversity
+    // Assuming full energy and no adversity
     let energyLevel = 100;
     let adversity = false;
 
