@@ -193,11 +193,12 @@ function getCompletionText(completion, taskName) {
 // Function to display energy bar with animation
 function showEnergyBar(energy) {
     const energyBar = document.getElementById('energy-bar-fill');
-    energyBar.style.width = '0%'; // Reset the bar first
+    energyBar.style.width = '0%'; // Reset the bar to 0 first
+    energyBar.style.transition = 'none'; // Remove transition for the reset
     setTimeout(() => {
-        energyBar.style.transition = 'width 5s'; // Smooth animation over 5 seconds
+        energyBar.style.transition = 'width 5s ease-in-out'; // Smooth animation over 5 seconds
         energyBar.style.width = `${energy}%`; // Fill the bar based on energy level
-    }, 100); // Delay to trigger the animation
+    }, 100); // Small delay to ensure the reset is seen before filling
 }
 
 // Function to generate a motivational message based on task completion and energy
@@ -220,7 +221,7 @@ function generateMotivationalMessage(score, tasks, adversity, positiveEvents, en
     }
 
     if (positiveEvents) {
-        message += ` it’s cool how ${positiveEvents} kept you going!`;
+        message += ` it's cool how ${positiveEvents} kept you going!`;
     }
 
     // Add the energy message at the end
@@ -232,7 +233,7 @@ function generateMotivationalMessage(score, tasks, adversity, positiveEvents, en
     // Show the energy bar
     showEnergyBar(energy);
 
-    // Trigger confetti and avatars after showing message
+    // Trigger confetti and avatars after showing the message
     triggerConfetti();
     document.getElementById('left-avatar').style.display = 'block';
     document.getElementById('right-avatar').style.display = 'block';
