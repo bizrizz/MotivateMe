@@ -9,9 +9,11 @@
 <body>
     <div class="container">
         <div id="question-box" class="question-box">
-            <p id="question">What task are you working on today?</p>
-            <input type="text" id="task" placeholder="Enter your task" oninput="categorizeTask()" required>
-            <div id="category-suggestion"></div>
+            <p id="question">What tasks are you working on today? (You can add multiple)</p>
+            <input type="text" id="task-input" placeholder="Enter a task" oninput="suggestTasks()" autocomplete="off">
+            <button onclick="addTask()">Add Task</button>
+            <ul id="suggestion-list"></ul>
+            <div id="task-list"></div>
             <button id="next-btn" onclick="nextQuestion()">Next</button>
         </div>
     </div>
