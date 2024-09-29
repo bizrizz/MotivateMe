@@ -25,7 +25,7 @@ body {
 
 /* Question box styling */
 .question-box {
-    background-color: #0000FF;
+    background-color: #228B22;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -106,7 +106,8 @@ input[type="number"] {
     overflow: hidden;
     height: 25px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    display: none; /* Hidden until needed */
+    z-index: 10; /* Ensures it's above most elements */
+    position: relative;
 }
 
 /* Energy bar fill */
@@ -115,12 +116,12 @@ input[type="number"] {
     width: 0;
     height: 100%;
     border-radius: 10px;
-    transition: width 5s ease-in-out; /* Controls how long the energy bar takes to fill up */
+    transition: width 5s ease-in-out;
 }
 
 /* Enlarged GIF Avatars with proper positioning */
 .avatar {
-    width: 200px; /* Increase avatar size */
+    width: 300px; /* Increase avatar size */
     height: auto;
     position: absolute;
     bottom: 0;
@@ -128,11 +129,11 @@ input[type="number"] {
 }
 
 #left-avatar {
-    left: -200px; /* Positioned outside of the container */
+    left: -250px; /* Positioned outside of the container */
 }
 
 #right-avatar {
-    right: -200px; /* Positioned outside of the container */
+    right: -250px; /* Positioned outside of the container */
 }
 
 #motivation-message {
