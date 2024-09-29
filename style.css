@@ -94,19 +94,20 @@ button:hover {
 
 /* Avatars on the sides of the container */
 .avatar {
-    width: 80px;
+    width: 250px; /* Increase the width */
+    height: 250px; /* Add height */
     position: absolute;
-    top: 50%;  /* Adjusts position vertically */
+    top: 50%;
     transform: translateY(-50%);
-    display: none; /* Initially hidden */
+    display: none; /* Avatars are hidden by default */
 }
 
 #left-avatar {
-    left: -100px; /* Place outside the left side of the container */
+    left: -200px; /* Adjust to place outside the left side of the container */
 }
 
 #right-avatar {
-    right: -100px; /* Place outside the right side of the container */
+    right: -200px; /* Adjust to place outside the right side of the container */
 }
 
 /* Confetti canvas styling */
