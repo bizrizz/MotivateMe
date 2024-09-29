@@ -1,4 +1,3 @@
-/* Body and container styling */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #000;
@@ -9,7 +8,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    overflow: hidden; /* Prevents page scrolling */
+    overflow: hidden; /* Ensures no scrolling */
 }
 
 .container {
@@ -19,28 +18,21 @@ body {
     background-color: #1a1a1a;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     position: relative;
-    z-index: 10; /* Ensure the container is above the confetti canvas */
+    z-index: 10; /* Ensures container is above other elements */
 }
 
-/* Question box styling */
-.question-box, .extra-questions, #result {
+.question-box {
     background-color: #0000FF;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
 }
 
-/* Hide extra windows initially */
-#extra-questions, #result {
-    display: none;
-}
-
 p {
     font-size: 24px;
 }
 
-/* Input field styling */
-input[type="text"], input[type="number"] {
+input[type="text"] {
     width: 100%;
     padding: 10px;
     margin-top: 20px;
@@ -49,10 +41,6 @@ input[type="text"], input[type="number"] {
     font-size: 18px;
     background-color: #e0e0e0;
     color: #333;
-}
-
-input[type="range"] {
-    width: 100%;
 }
 
 button {
@@ -70,42 +58,62 @@ button:hover {
     background-color: #333;
 }
 
-/* Task item styling */
 .task-item {
     margin-top: 10px;
     padding: 10px;
     background-color: #333;
     border-radius: 5px;
+    text-align: left;
     color: #fff;
 }
 
-/* Motivation message box styling */
+input[type="range"] {
+    width: 100%;
+}
+
+input[type="number"] {
+    width: 60px;
+    padding: 5px;
+}
+
+#result {
+    display: none;
+    padding: 20px;
+}
+
 .motivation-box {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #1a1a1a;
     padding: 20px;
+    background-color: #1a1a1a;
     border-radius: 10px;
     text-align: center;
     position: relative;
-    z-index: 10;
 }
 
+/* Enlarged GIF Avatars with proper positioning */
 .avatar {
-    width: 200px;
+    width: 200px; /* Increase avatar size */
     height: auto;
     position: absolute;
     bottom: 0;
-    display: none; /* Hidden by default */
+    display: none; /* Avatars are hidden by default */
 }
 
 #left-avatar {
-    left: -150px; /* Adjust to place outside the left side of the container */
+    left: -200px; /* Positioned outside of the container */
 }
 
 #right-avatar {
-    right: -150px; /* Adjust to place outside the right side of the container */
+    right: -200px; /* Positioned outside of the container */
+}
+
+#motivation-message {
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+    flex: 1; /* Ensure message takes up remaining space */
 }
 
 /* Confetti canvas styling */
