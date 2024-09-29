@@ -93,7 +93,6 @@ function nextQuestion() {
     document.getElementById("next-btn").style.display = "none";
 }
 
-// Submit roadblocks and positive events, then calculate motivation score and energy
 function submitExtraQuestions() {
     const roadblocksInput = document.getElementById("roadblocks-input").value;
     const positiveEventsInput = document.getElementById("positive-events-input").value;
@@ -107,7 +106,7 @@ function submitExtraQuestions() {
 
     // Calculate energy and motivation score
     let finalEnergy = calculateEnergy();
-    calculateMotivationScore(adversityFactor, positiveEventBoost, finalEnergy, roadblocksInput);
+    calculateMotivationScore(adversityFactor, positiveEventBoost, finalEnergy, roadblocksInput, positiveEventsInput);
 }
 
 // Function to calculate the motivation score based on inputs
@@ -130,71 +129,85 @@ function calculateMotivationScore(adversityFactor, positiveEventBoost, finalEner
     triggerConfetti();
 }
 
-// Function to generate a motivational message based on the score, tasks, and adversity
-function generateMotivationalMessage(score, tasks, adversity, energy) {
-    let messageBankKey = getMessageBankKey(score); // Fetch the appropriate message range
-    let taskDetails = tasks.map(task => `${task.name}: ${task.completion}% completed`).join(', ');
+function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
+    let messageBankKey = getMessageBankKey(score); // Fetch the correct message range
+    let taskDetails = tasks.map(task => {
+        let completionText;
+        if (task.completion < 30) {
+            completionText = `you gave it a start on ${task.name}, got about ${task.completion}% done`;
+        } else if (task.completion >= 30 && task.completion < 70) {
+            completionText = `you made some good progress on ${task.name}, hitting ${task.completion}%`;
+        } else {
+            completionText = `you did awesome and completed ${task.completion}% of ${task.name}`;
+        }
+        return completionText;
+    }).join(', ');
 
-    let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * 3)]; // Randomly select a message from the bank
+    // Select a random message from the bank
+    let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
 
     // Replace placeholders with actual values
     message = message.replace("{taskDetails}", taskDetails);
     message = message.replace("{energy}", energy);
 
+    // Personalize the adversity and positive event part
     if (adversity) {
-        message += ` Despite feeling ${adversity}, you completed ${taskDetails}. That’s amazing!`;
+        message += ` even though you were feeling ${adversity}, you still pushed through.`;
+    }
+
+    if (positiveEvents) {
+        message += ` it’s cool how ${positiveEvents} kept you going!`;
     }
 
     // Display the motivational message in the result box
     document.getElementById('motivation-message').innerText = message;
 }
 
-// **Message Bank for Different Motivation Score Ranges**
 const motivationalMessages = {
     "1-5": [
-        "Today was tough, but you still managed to get through it. You completed {taskDetails} with only {energy}% energy. That's still progress, and it's important to acknowledge your effort!",
-        "It might not feel like a lot, but you’ve made it through some tough moments today. With only {energy}% energy, you completed {taskDetails}. Keep going—tomorrow is a fresh start.",
-        "You faced real adversity today, but you pushed through with {energy}% energy and still completed {taskDetails}. Rest well and come back stronger!"
+        "today was tough, but hey, you still made it through. {taskDetails} with only {energy}% energy—seriously, that’s something.",
+        "even if it doesn’t feel like much, you kept going today. {taskDetails} and you powered through with just {energy}% energy. tomorrow’s a new day.",
+        "you faced some hard stuff today, but with {energy}% energy, you still managed to get {taskDetails} done. rest up, you got this!"
     ],
     "6-10": [
-        "Even though your energy was low, you made it through. With only {energy}% energy, you managed to complete {taskDetails}. That shows real dedication!",
-        "It wasn’t an easy day, but you still managed to give it your all. You completed {taskDetails} with {energy}% energy, which is amazing.",
-        "You gave it your best shot with just {energy}% energy today, and you completed {taskDetails}. Tomorrow will be even better!"
+        "you gave it your all even with low energy. {taskDetails}, and with only {energy}% energy, that’s pretty impressive.",
+        "it wasn’t easy today, but you made progress with {taskDetails}, even with {energy}% energy. keep your head up, tomorrow’s another chance.",
+        "even with just {energy}% energy, you kept going and got {taskDetails} done. you’ve got dedication, no doubt."
     ],
     "11-20": [
-        "Despite challenges, you made significant progress today. You completed {taskDetails} with {energy}% energy—keep up the great work!",
-        "You’re moving forward! You had {energy}% energy today and still managed to complete {taskDetails}. Stay focused, and you’ll see more progress soon.",
-        "Your effort today really stands out. With {energy}% energy, you managed to complete {taskDetails}. That’s a win—keep it up!"
+        "despite everything, you made solid progress today. {taskDetails} with {energy}% energy—keep going, you’re on the right track.",
+        "you’re moving forward, and that’s awesome! with {energy}% energy, you still managed to {taskDetails}. keep it up!",
+        "your effort today was great. with {energy}% energy, you completed {taskDetails}. keep pushing forward!"
     ],
     "21-40": [
-        "You’ve been productive! You completed {taskDetails} with {energy}% energy, and that’s a solid effort. Keep up the great work!",
-        "You’ve accomplished quite a bit today. With {energy}% energy, you finished {taskDetails}. Keep pushing forward!",
-        "Nice work! You had {energy}% energy and still managed to complete {taskDetails}. You’re well on your way to hitting your goals."
+        "you’ve been pretty productive today. with {energy}% energy, you completed {taskDetails}, that’s solid.",
+        "nice work! you managed to complete {taskDetails} with {energy}% energy—keep it going!",
+        "you’ve accomplished a lot today, finishing {taskDetails}. that’s a win!"
     ],
     "41-60": [
-        "What a productive day! With {energy}% energy, you managed to finish {taskDetails}. Keep this momentum going!",
-        "Great job! You had {energy}% energy and completed {taskDetails}. Your dedication is paying off!",
-        "You’re really pushing through! You had {energy}% energy and still managed to get {taskDetails} done. Keep it going!"
+        "awesome day! with {energy}% energy, you finished {taskDetails}—keep that momentum going!",
+        "you’re really pushing through. you completed {taskDetails} with {energy}% energy—that’s amazing.",
+        "you’re doing great! {taskDetails} with {energy}% energy—this is progress!"
     ],
     "61-80": [
-        "Fantastic effort today! You completed {taskDetails} with {energy}% energy, showing just how determined you are. Keep going!",
-        "You’re on fire! With {energy}% energy, you managed to complete {taskDetails}. You’re doing amazing!",
-        "Wow! You gave {energy}% energy and completed {taskDetails}. Keep that momentum going!"
+        "you crushed it today. {taskDetails} and you did it with {energy}% energy. keep up the great work!",
+        "wow, you were on fire today! {taskDetails} and you did it all with {energy}% energy. nice job!",
+        "you gave {energy}% energy today and knocked out {taskDetails}. keep that going!"
     ],
     "81-90": [
-        "Incredible work! You completed {taskDetails} with {energy}% energy, and you’re almost at the top. Keep pushing!",
-        "You’ve done amazing! With {energy}% energy, you’ve finished {taskDetails}. You’re so close to perfection!",
-        "Your energy might be running low, but you’ve achieved so much. With {energy}% energy, you’ve completed {taskDetails}—keep going!"
+        "incredible work! {taskDetails} with {energy}% energy, and you’re almost there. keep pushing!",
+        "you did amazing today! {taskDetails} and with {energy}% energy, that’s so close to perfection!",
+        "your energy might be running low, but you’ve achieved so much. {taskDetails} with {energy}% energy—keep going!"
     ],
     "91-99": [
-        "You’re nearly perfect today! You had {energy}% energy and completed {taskDetails}. Keep up the excellent work—you’re almost at 100%!",
-        "You’re almost there! With {energy}% energy, you managed to complete {taskDetails}. Just a bit more, and you’ll hit your goals!",
-        "So close! With {energy}% energy, you managed to complete {taskDetails}. One final push and you’re at 100%!"
+        "you’re almost at perfection! with {energy}% energy, you completed {taskDetails}. one last push and you’re there!",
+        "so close! {taskDetails} with {energy}% energy, you’re almost at the top. you’ve got this!",
+        "you’re nearly perfect today! {taskDetails} with {energy}% energy. keep it up!"
     ],
     "100": [
-        "Perfection! You’ve completed everything you set out to do today—{taskDetails}. Celebrate this win because you’ve earned it!",
-        "You’ve hit 100%! By completing {taskDetails}, you’ve reached the peak of productivity. Keep this up, and the sky’s the limit!",
-        "Incredible! You’ve completed every single task—{taskDetails}. There’s no stopping you now!"
+        "perfect score! you got {taskDetails} done with {energy}% energy. that’s beyond awesome!",
+        "you totally nailed it today. {taskDetails} with {energy}% energy, you didn’t leave anything undone!",
+        "you hit 100%! by finishing {taskDetails}, you’ve reached the top. keep that up!"
     ]
 };
 
