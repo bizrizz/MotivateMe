@@ -169,45 +169,7 @@ function showEnergyBar(energy) {
     }, stepTime); // Control the speed of the bar and percentage increase
 }
 
-// Function to generate a motivational message based on task completion and energy
-function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
-    let messageBankKey = getMessageBankKey(score);
-    let taskDetails = tasks.map(task => getCompletionText(task.completion, task.name)).join(', ');
-
-    // Retrieve a random motivational message based on score
-    let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
-
-    // Add personalized energy messages based on the energy intervals
-    let energyMessage = getEnergyMessage(energy);
-
-    // Replace placeholders with actual values
-    message = message.replace("{taskDetails}", taskDetails);
-    
-    // Ensure only one energy message is included based on the user's actual energy level
-    message += ` ${energyMessage}`;
-
-    // Personalize the adversity and positive event part, only if applicable
-    if (adversity) {
-        message += ` despite feeling ${adversity}, you still pushed through.`;
-    }
-
-    if (positiveEvents) {
-        message += ` it’s cool how ${positiveEvents} kept you going!`;
-    }
-
-    // Display the motivational message
-    document.getElementById('motivation-message').innerText = message;
-
-    // Show the energy bar
-    showEnergyBar(energy);
-
-    // Trigger confetti and avatars after showing message
-    triggerConfetti();
-    document.getElementById('left-avatar').style.display = 'block';
-    document.getElementById('right-avatar').style.display = 'block';
-}
-
-// Function to get the appropriate energy-based message
+// Energy message based on energy level
 function getEnergyMessage(energy) {
     if (energy <= 20) {
         return "you had really low energy today, but you still managed to do something. that’s amazing.";
@@ -217,9 +179,45 @@ function getEnergyMessage(energy) {
         return "you had decent energy today and made solid progress. keep this momentum going!";
     } else if (energy > 60 && energy <= 80) {
         return "your energy levels were good, and you crushed a lot of tasks. great job!";
-    } else {
+    } else if (energy > 80) {
         return "your energy was off the charts today! you got so much done, keep up the awesome work!";
+    } else {
+        return ""; // Fallback, just in case
     }
+}
+
+// Function to generate motivational message based on task completion and energy
+function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
+    let messageBankKey = getMessageBankKey(score);
+    let taskDetails = tasks.map(task => getCompletionText(task.completion, task.name)).join(', ');
+
+    // Fetch the motivational message from the message bank
+    let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
+
+    // Add energy-related message
+    let energyMessage = getEnergyMessage(energy);
+
+    // Replace placeholders in the message with actual values
+    message = message.replace("{taskDetails}", taskDetails);
+    
+    // Add the correct energy message only once based on energy level
+    message += ` ${energyMessage}`;
+
+    // Personalize the adversity and positive event parts
+    if (adversity) {
+        message += ` even though you were feeling ${adversity}, you still pushed through.`;
+    }
+    if (positiveEvents) {
+        message += ` it’s cool how ${positiveEvents} kept you going!`;
+    }
+
+    // Display the final motivational message
+    document.getElementById('motivation-message').innerText = message;
+
+    // Trigger confetti and show avatars
+    triggerConfetti();
+    document.getElementById('left-avatar').style.display = 'block';
+    document.getElementById('right-avatar').style.display = 'block';
 }
 // Function to calculate the motivation score
 function calculateMotivationScore(adversityFactor, positiveEventBoost, finalEnergy, roadblocksInput, positiveEventsInput) {
