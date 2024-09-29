@@ -146,6 +146,66 @@ const motivationalMessages = {
     ]
 };
 
+// Function to display energy bar with animation and synchronized percentage
+function showEnergyBar(energy) {
+    const energyBar = document.getElementById('energy-bar-fill');
+    const energyPercentage = document.getElementById('energy-bar-percentage');
+
+    energyBar.style.width = '0%'; // Reset the bar first
+    energyPercentage.innerText = '0%'; // Reset the percentage
+
+    let currentEnergy = 0; // Initialize the current energy to 0
+    const fillDuration = 5000; // Total duration in milliseconds (5 seconds)
+    const stepTime = Math.round(fillDuration / energy); // Calculate time for each percent increment
+
+    const interval = setInterval(() => {
+        if (currentEnergy < energy) {
+            currentEnergy++;
+            energyBar.style.width = `${currentEnergy}%`; // Update the width of the bar
+            energyPercentage.innerText = `${currentEnergy}%`; // Update the percentage display
+        } else {
+            clearInterval(interval); // Stop the interval once the desired energy is reached
+        }
+    }, stepTime); // Control the speed of the bar and percentage increase
+}
+
+// Function to generate a motivational message based on task completion and energy
+function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
+    let messageBankKey = getMessageBankKey(score);
+    let taskDetails = tasks.map(task => getCompletionText(task.completion, task.name)).join(', ');
+
+    let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
+
+    // Add personalized energy messages based on the energy intervals
+    let energyMessage = getEnergyMessage(energy);
+
+    // Replace placeholders with actual values
+    message = message.replace("{taskDetails}", taskDetails);
+
+    // Add energy message based on the actual energy level
+    message += ` ${energyMessage}`;
+
+    // Personalize the adversity and positive event part
+    if (adversity) {
+        message += ` even though you were feeling ${adversity}, you still pushed through.`;
+    }
+
+    if (positiveEvents) {
+        message += ` it’s cool how ${positiveEvents} kept you going!`;
+    }
+
+    // Display the motivational message
+    document.getElementById('motivation-message').innerText = message;
+
+    // Show the energy bar
+    showEnergyBar(energy);
+
+    // Trigger confetti and avatars after showing message
+    triggerConfetti();
+    document.getElementById('left-avatar').style.display = 'block';
+    document.getElementById('right-avatar').style.display = 'block';
+}
+
 // Function to calculate the motivation score
 function calculateMotivationScore(adversityFactor, positiveEventBoost, finalEnergy, roadblocksInput, positiveEventsInput) {
     let totalCompletion = selectedTasks.reduce((total, task) => total + parseInt(task.completion), 0) / selectedTasks.length;
@@ -188,66 +248,6 @@ function getCompletionText(completion, taskName) {
     } else {
         return `you crushed ${taskName}, almost finished it all!`;
     }
-}
-
-// Function to display energy bar with animation and synchronized percentage
-function showEnergyBar(energy) {
-    const energyBar = document.getElementById('energy-bar-fill');
-    const energyPercentage = document.getElementById('energy-bar-percentage');
-
-    energyBar.style.width = '0%'; // Reset the bar first
-    energyPercentage.innerText = '0%'; // Reset the percentage
-
-    let currentEnergy = 0; // Initialize the current energy to 0
-    const fillDuration = 5000; // Total duration in milliseconds (5 seconds)
-    const stepTime = Math.round(fillDuration / energy); // Calculate time for each percent increment
-
-    const interval = setInterval(() => {
-        if (currentEnergy < energy) {
-            currentEnergy++;
-            energyBar.style.width = `${currentEnergy}%`; // Update the width of the bar
-            energyPercentage.innerText = `${currentEnergy}%`; // Update the percentage display
-        } else {
-            clearInterval(interval); // Stop the interval once the desired energy is reached
-        }
-    }, stepTime); // Control the speed of the bar and percentage increase
-}
-
-// Function to generate a motivational message based on task completion and energy
-function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
-    let messageBankKey = getMessageBankKey(score);
-    let taskDetails = tasks.map(task => getCompletionText(task.completion, task.name)).join(', ');
-
-    let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
-
-    // Add personalized energy messages based on the energy intervals
-    let energyMessage = getEnergyMessage(energy);
-
-    // Replace placeholders with actual values
-    message = message.replace("{taskDetails}", taskDetails);
-
-    // Personalize the adversity and positive event part
-    if (adversity) {
-        message += ` even though you were feeling ${adversity}, you still pushed through.`;
-    }
-
-    if (positiveEvents) {
-        message += ` it’s cool how ${positiveEvents} kept you going!`;
-    }
-
-    // Add the energy message at the end
-    message += ` ${energyMessage}`;  // Only the descriptive message
-
-    // Display the motivational message
-    document.getElementById('motivation-message').innerText = message;
-
-    // Show the energy bar
-    showEnergyBar(energy);
-
-    // Trigger confetti and avatars after showing message
-    triggerConfetti();
-    document.getElementById('left-avatar').style.display = 'block';
-    document.getElementById('right-avatar').style.display = 'block';
 }
 
 // Function to get the message bank key based on score
