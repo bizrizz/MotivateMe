@@ -225,7 +225,6 @@ function generateMotivationalMessage(score, tasks, adversity, positiveEvents, en
 
     // Replace placeholders with actual values
     message = message.replace("{taskDetails}", taskDetails);
-    message = message.replace("{energy}", energy);
 
     // Personalize the adversity and positive event part
     if (adversity) {
@@ -237,7 +236,7 @@ function generateMotivationalMessage(score, tasks, adversity, positiveEvents, en
     }
 
     // Add the energy message at the end
-    message += ` ${energyMessage}`;
+    message += ` ${energyMessage}`;  // Only the descriptive message
 
     // Display the motivational message
     document.getElementById('motivation-message').innerText = message;
