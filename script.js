@@ -194,11 +194,12 @@ function generateMotivationalMessage(score, tasks, adversity, positiveEvents, en
     // Select a random motivational message
     let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
 
+    // Replace placeholders in the message with actual task details and energy message
+    message = message.replace("{taskDetails}", taskDetails);
+
     // Get energy message based on the energy level
     let energyMessage = getEnergyMessage(energy);
-
-    // Add only one energy message to avoid conflicting statements
-    message = message.replace("{energy}", energyMessage);
+    message = message.replace("{energy}", energyMessage); // Replace {energy} with energyMessage
 
     // Personalize the adversity and positive event parts
     if (adversity) {
