@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MotivateMe - Motivation Tracker</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="style.css"> <!-- Link to the external CSS file -->
 </head>
 <body>
     <div class="container">
+        <!-- Task Input Section -->
         <div id="question-box" class="question-box">
             <p>What task's are you working on today?</p>
             <input type="text" id="task-input" placeholder="Enter your task">
@@ -16,6 +17,7 @@
             <button id="next-btn" style="display:none;" onclick="nextQuestion()">Next</button>
         </div>
 
+        <!-- Extra Questions Section -->
         <div id="extra-questions" style="display:none;">
             <p>What roadblocks did you face today?</p>
             <input type="text" id="roadblocks-input" placeholder="e.g., feeling sick, low energy">
@@ -26,6 +28,7 @@
             <button id="final-next-btn" onclick="submitExtraQuestions()">Submit</button>
         </div>
 
+        <!-- Result Section -->
         <div id="result" style="display: none;">
             <div id="motivation-box">
                 <div id="motivation-message"></div>
@@ -36,8 +39,8 @@
         <img id="left-avatar" src="left-dancing.gif" alt="Left Avatar" class="avatar">
         <img id="right-avatar" src="right-dancing.gif" alt="Right Avatar" class="avatar">
 
-        <!-- Energy bar container -->
-        <div id="energy-bar-container">
+        <!-- Energy Bar -->
+        <div id="energy-bar-container" style="display: none;">
             <div id="energy-bar-fill"></div>
         </div>
 
