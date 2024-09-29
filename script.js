@@ -201,7 +201,6 @@ function showEnergyBar(energy) {
     }, 100); // Small delay to ensure the reset is seen before filling
 }
 
-// Function to generate a motivational message based on task completion and energy
 function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
     let messageBankKey = getMessageBankKey(score);
     let taskDetails = tasks.map(task => getCompletionText(task.completion, task.name)).join(', ');
@@ -217,11 +216,11 @@ function generateMotivationalMessage(score, tasks, adversity, positiveEvents, en
 
     // Personalize the adversity and positive event part
     if (adversity) {
-        message += ` even though you were feeling ${adversity}, you still pushed through.`;
+        message += ` you were feeling ${adversity}, but you pushed through.`;
     }
 
     if (positiveEvents) {
-        message += ` it's cool how ${positiveEvents} kept you going!`;
+        message += ` It’s cool how ${positiveEvents} kept you motivated today!`;
     }
 
     // Add the energy message at the end
@@ -233,7 +232,7 @@ function generateMotivationalMessage(score, tasks, adversity, positiveEvents, en
     // Show the energy bar
     showEnergyBar(energy);
 
-    // Trigger confetti and avatars after showing the message
+    // Trigger confetti and avatars after showing message
     triggerConfetti();
     document.getElementById('left-avatar').style.display = 'block';
     document.getElementById('right-avatar').style.display = 'block';
