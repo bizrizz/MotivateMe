@@ -1,33 +1,33 @@
-let currentStep = 0;
-const questions = [
-    "What task are you working on today?",
-    "How important is this task? (1-5)",
-    "How much of the task did you complete? (0-100%)",
-    "Did you face any adversity while completing the task?",
-    "Any other major life events affecting your progress today?"
-];
-
 const categories = {
-    "homework": "Academics",
-    "study": "Academics",
-    "essay": "Academics",
-    "hockey": "Sports",
-    "soccer": "Sports",
-    "gym": "Physical Health",
-    "family": "Family",
-    "work": "Part-Time Job"
+    "academics": ["homework", "study", "essay", "assignment"],
+    "sports": ["hockey", "soccer", "gym", "training"],
+    "family": ["family", "siblings", "parents"],
+    "work": ["job", "shift", "work", "office"]
 };
 
-function categorizeTask() {
+async function categorizeTask() {
     const taskInput = document.getElementById("task").value.toLowerCase();
     let category = "Miscellaneous";
-    
-    // Simple keyword-based AI categorization
-    for (const keyword in categories) {
-        if (taskInput.includes(keyword)) {
-            category = categories[keyword];
-            break;
-        }
+
+    // Load the Hugging Face model for text classification
+    const tokenizer = await transformers.AutoTokenizer.fromPretrained('distilbert-base-uncased');
+    const model = await transformers.AutoModelForSequenceClassification.fromPretrained('distilbert-base-uncased-finetuned-sst-2-english');
+
+    // Encode the input task
+    const inputs = tokenizer(taskInput, { returnTensors: "tf" });
+    const logits = model(inputs).logits;
+    const predictions = Array.from(logits.dataSync());
+
+    // Map the predictions to categories
+    const maxPrediction = Math.max(...predictions);
+    if (predictions.indexOf(maxPrediction) === 0) {
+        category = "Academics";
+    } else if (predictions.indexOf(maxPrediction) === 1) {
+        category = "Sports";
+    } else if (predictions.indexOf(maxPrediction) === 2) {
+        category = "Family";
+    } else if (predictions.indexOf(maxPrediction) === 3) {
+        category = "Work";
     }
 
     document.getElementById("category-suggestion").innerText = `This task is categorized under: ${category}`;
