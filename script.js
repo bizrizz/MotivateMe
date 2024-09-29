@@ -160,18 +160,26 @@ function calculateMotivationScore(adversityFactor, positiveEventBoost, finalEner
     triggerConfetti(); // Trigger confetti effect
 }
 
-// Function to generate motivational message with natural language ranges
+// Function to generate a motivational message based on the score, tasks, adversity, and energy
 function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
-    let messageBankKey = getMessageBankKey(score);
-    
-    // Map completion percentages to natural language ranges
+    let messageBankKey = getMessageBankKey(score); // Fetch the correct message range for completion
     let taskDetails = tasks.map(task => {
-        let completionText = getCompletionText(task.completion, task.name);
+        let completionText;
+        if (task.completion < 30) {
+            completionText = `you got started on ${task.name}, with about ${task.completion}% done`;
+        } else if (task.completion >= 30 && task.completion < 70) {
+            completionText = `you made some good progress on ${task.name}, hitting ${task.completion}%`;
+        } else {
+            completionText = `you did awesome and completed ${task.completion}% of ${task.name}`;
+        }
         return completionText;
     }).join(', ');
 
-    // Select a random message from the bank
+    // Select a random message from the bank for task completion
     let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
+
+    // Add personalized energy messages based on the energy intervals
+    let energyMessage = getEnergyMessage(energy);
 
     // Replace placeholders with actual values
     message = message.replace("{taskDetails}", taskDetails);
@@ -183,8 +191,11 @@ function generateMotivationalMessage(score, tasks, adversity, positiveEvents, en
     }
 
     if (positiveEvents) {
-        message += ` and hey, ${positiveEvents} really gave you a boost today!`;
+        message += ` it’s cool how ${positiveEvents} kept you going!`;
     }
+
+    // Add the energy message at the end
+    message += ` ${energyMessage}`;
 
     // Display the motivational message
     document.getElementById('motivation-message').innerText = message;
@@ -192,9 +203,24 @@ function generateMotivationalMessage(score, tasks, adversity, positiveEvents, en
     // Make avatars visible once the message is generated
     document.getElementById('left-avatar').style.display = 'block';
     document.getElementById('right-avatar').style.display = 'block';
-    
-    // Trigger confetti after showing the message
+
+    // Trigger confetti after showing message
     triggerConfetti();
+}
+
+// Function to get energy-based message based on the energy level
+function getEnergyMessage(energy) {
+    if (energy <= 20) {
+        return "you had really low energy today, but you still managed to do something. that’s amazing.";
+    } else if (energy > 20 && energy <= 40) {
+        return "your energy was low, but you powered through some tasks. give yourself credit for that!";
+    } else if (energy > 40 && energy <= 60) {
+        return "you had decent energy today and made solid progress. keep this momentum going!";
+    } else if (energy > 60 && energy <= 80) {
+        return "your energy levels were good, and you crushed a lot of tasks. great job!";
+    } else {
+        return "your energy was off the charts today! you got so much done, keep up the awesome work!";
+    }
 }
 
 // Helper function to map completion percentage to natural language descriptions
