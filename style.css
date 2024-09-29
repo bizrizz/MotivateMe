@@ -1,3 +1,4 @@
+/* Body and container styling */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #000;
@@ -8,44 +9,104 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    overflow: hidden;
+    overflow: hidden; /* Prevents page scrolling */
 }
 
 .container {
     width: 400px;
     padding: 20px;
     border-radius: 10px;
-    background-color: #228B22;
+    background-color: #1a1a1a;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 10; /* Ensure the container is above the confetti canvas */
+}
+
+/* Question box styling */
+.question-box, .extra-questions, #result {
+    background-color: #0000FF;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Hide extra windows initially */
+#extra-questions, #result {
+    display: none;
+}
+
+p {
+    font-size: 24px;
+}
+
+/* Input field styling */
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #333;
+}
+
+/* Task item styling */
+.task-item {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 5px;
+    color: #fff;
+}
+
+/* Motivation message box styling */
+.motivation-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
     position: relative;
     z-index: 10;
 }
 
-/* Motivation message styling */
-#motivation-message {
-    font-size: 26px;
-    font-weight: bold;
-    color: white;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Avatars styling */
+/* Avatars on the sides of the container */
 .avatar {
-    display: none; /* Initially hidden */
     width: 80px;
     position: absolute;
-    top: 50%;
+    top: 50%;  /* Adjusts position vertically */
     transform: translateY(-50%);
-    z-index: 10;
+    display: none; /* Initially hidden */
 }
 
 #left-avatar {
-    left: -100px; /* Position avatar to the left of the message box */
+    left: -100px; /* Place outside the left side of the container */
 }
 
 #right-avatar {
-    right: -100px; /* Position avatar to the right of the message box */
+    right: -100px; /* Place outside the right side of the container */
 }
 
 /* Confetti canvas styling */
@@ -55,6 +116,6 @@ canvas#confetti-canvas {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
-    pointer-events: none;
+    z-index: 1; /* Confetti stays behind other elements */
+    pointer-events: none; /* Ensure confetti doesn't block interactions */
 }
