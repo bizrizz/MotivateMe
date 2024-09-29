@@ -8,15 +8,18 @@
 </head>
 <body>
     <div class="container">
+        <!-- Task Input Section -->
         <div id="question-box" class="question-box">
             <p id="question">What task are you working on today?</p>
             <input type="text" id="task-input" placeholder="Enter your task" autocomplete="off">
             <button id="submit-task-btn" onclick="addTask()">Submit Task</button>
             <div id="task-list"></div>
         </div>
+
+        <!-- Button to proceed to the next question -->
         <button id="next-btn" onclick="nextQuestion()" style="display:none;">Next</button>
 
-        <!-- New Section for Roadblocks and Positive Events -->
+        <!-- Extra Questions Section for Roadblocks and Positive Events -->
         <div id="extra-questions" style="display:none;">
             <h3>Roadblocks</h3>
             <label>What challenges or roadblocks did you face today? (e.g., feeling sad, sick, tired, distracted)</label>
@@ -27,8 +30,10 @@
             <input type="text" id="positive-events-input" placeholder="Enter any positive events">
         </div>
 
+        <!-- Button to submit roadblocks and positive events -->
         <button id="final-next-btn" onclick="submitExtraQuestions()" style="display:none;">Submit</button>
 
+        <!-- Result Section -->
         <div id="result" style="display:none;">
             <h2>Your Motivation Score:</h2>
             <p id="motivation-score"></p>
@@ -37,6 +42,7 @@
         </div>
     </div>
 
+    <!-- Importing the JavaScript logic -->
     <script src="https://cdn.jsdelivr.net/npm/@huggingface/transformers@1.0.0/lib/index.js"></script>
     <script src="script.js"></script>
 </body>
