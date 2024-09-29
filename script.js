@@ -190,17 +190,28 @@ function getCompletionText(completion, taskName) {
     }
 }
 
-// Function to display energy bar with animation
+// Function to display energy bar with animation and percentage text
 function showEnergyBar(energy) {
     const energyBar = document.getElementById('energy-bar-fill');
-    energyBar.style.width = '0%'; // Reset the bar to 0 first
-    energyBar.style.transition = 'none'; // Remove transition for the reset
-    setTimeout(() => {
-        energyBar.style.transition = 'width 5s ease-in-out'; // Smooth animation over 5 seconds
-        energyBar.style.width = `${energy}%`; // Fill the bar based on energy level
-    }, 100); // Small delay to ensure the reset is seen before filling
+    const energyPercentage = document.getElementById('energy-bar-percentage');
+
+    energyBar.style.width = '0%'; // Reset the bar first
+    energyPercentage.innerText = '0%'; // Reset the percentage
+
+    let currentEnergy = 0; // Initialize the current energy to 0
+
+    const interval = setInterval(() => {
+        if (currentEnergy < energy) {
+            currentEnergy++;
+            energyBar.style.width = `${currentEnergy}%`;
+            energyPercentage.innerText = `${currentEnergy}%`;
+        } else {
+            clearInterval(interval); // Stop the interval once the desired energy is reached
+        }
+    }, 50); // Control the speed of the bar and percentage increase
 }
 
+// Function to generate a motivational message based on task completion and energy
 function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
     let messageBankKey = getMessageBankKey(score);
     let taskDetails = tasks.map(task => getCompletionText(task.completion, task.name)).join(', ');
@@ -216,11 +227,11 @@ function generateMotivationalMessage(score, tasks, adversity, positiveEvents, en
 
     // Personalize the adversity and positive event part
     if (adversity) {
-        message += ` you were feeling ${adversity}, but you pushed through.`;
+        message += ` even though you were feeling ${adversity}, you still pushed through.`;
     }
 
     if (positiveEvents) {
-        message += ` It’s cool how ${positiveEvents} kept you motivated today!`;
+        message += ` it’s cool how ${positiveEvents} kept you going!`;
     }
 
     // Add the energy message at the end
