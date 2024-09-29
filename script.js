@@ -186,36 +186,35 @@ function getEnergyMessage(energy) {
     }
 }
 
-// Function to generate a motivational message based on task completion and energy
+// Function to generate motivational message based on task completion and energy
 function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
     let messageBankKey = getMessageBankKey(score);
     let taskDetails = tasks.map(task => getCompletionText(task.completion, task.name)).join(', ');
 
-    // Select a random motivational message
+    // Fetch the motivational message from the message bank
     let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
 
-    // Get energy message based on the energy level
+    // Add energy-related message
     let energyMessage = getEnergyMessage(energy);
 
-    // Add only one energy message to avoid conflicting statements
-    message = message.replace("{energy}", energyMessage);
+    // Replace placeholders in the message with actual values
+    message = message.replace("{taskDetails}", taskDetails);
+    
+    // Add the correct energy message only once based on energy level
+    message += ` ${energyMessage}`;
 
     // Personalize the adversity and positive event parts
     if (adversity) {
-        message += ` Even though you were feeling ${adversity}, you still pushed through.`;
+        message += ` even though you were feeling ${adversity}, you still pushed through.`;
     }
-
     if (positiveEvents) {
-        message += ` It’s cool how ${positiveEvents} kept you going!`;
+        message += ` it’s cool how ${positiveEvents} kept you going!`;
     }
 
-    // Finalize and display the motivational message
+    // Display the final motivational message
     document.getElementById('motivation-message').innerText = message;
 
-    // Show the energy bar animation
-    showEnergyBar(energy);
-
-    // Trigger confetti and display avatars
+    // Trigger confetti and show avatars
     triggerConfetti();
     document.getElementById('left-avatar').style.display = 'block';
     document.getElementById('right-avatar').style.display = 'block';
