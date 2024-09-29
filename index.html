@@ -15,6 +15,20 @@
             <div id="task-list"></div>
         </div>
         <button id="next-btn" onclick="nextQuestion()" style="display:none;">Next</button>
+
+        <!-- New Section for Roadblocks and Positive Events -->
+        <div id="extra-questions" style="display:none;">
+            <h3>Roadblocks</h3>
+            <label>What roadblocks did you face today? (e.g., feeling sick, tired, distracted)</label>
+            <input type="text" id="roadblocks-input" placeholder="Enter any roadblocks">
+            
+            <h3>Positive Events</h3>
+            <label>What went well today? (e.g., feeling energized, productive)</label>
+            <input type="text" id="positive-events-input" placeholder="Enter any positive events">
+        </div>
+
+        <button id="final-next-btn" onclick="submitExtraQuestions()" style="display:none;">Submit</button>
+
         <div id="result" style="display:none;">
             <h2>Your Motivation Score:</h2>
             <p id="motivation-score"></p>
