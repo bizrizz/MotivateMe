@@ -261,7 +261,7 @@ function getMessageBankKey(score) {
     if (score <= 80) return "61-80";
     if (score <= 90) return "81-90";
     if (score <= 99) return "91-99";
-    return "100"; // If score is 100
+    return "100";  // If score is 100
 }
 
 // Function to calculate motivation score and display a motivational message
@@ -273,9 +273,9 @@ function calculateMotivationScore(adversityFactor, positiveEventBoost, finalEner
     let motivationScore = (totalCompletion * adversityFactor * positiveEventBoost * averageScore * (finalEnergy / 100)) / 100;
 
     if (motivationScore < 10 && totalCompletion > 0) motivationScore = 10;  // Minimum 10% score if some work was done
-    if (motivationScore > 100) motivationScore = 100; // Cap at 100%
+    if (motivationScore > 100) motivationScore = 100;  // Cap at 100%
 
-    document.getElementById('motivation-score').style.display = 'none'; // Hide the motivation score text
+    document.getElementById('motivation-score').style.display = 'none'; // Hide the motivation score
 
     // Generate motivational message based on the score and energy
     generateMotivationalMessage(Math.round(motivationScore), selectedTasks, roadblocksInput, finalEnergy);
@@ -310,3 +310,4 @@ function generateMotivationalMessage(score, tasks, adversity, energy) {
     // Display the motivational message in the result box
     document.getElementById('motivation-message').innerText = message;
 }
+
