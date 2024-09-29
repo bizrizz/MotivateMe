@@ -100,17 +100,17 @@ function submitExtraQuestions() {
 
 const motivationalMessages = {
     "1-5": [
-        "today was tough, but hey, you still made it through. {taskDetails} despite feeling low energy—seriously, that’s something.",
-        "even if it doesn’t feel like much, you kept going today. {taskDetails} and you powered through despite having low energy. tomorrow’s a new day.",
-        "you faced some hard stuff today, but you still managed to get {taskDetails} done with low energy. rest up, you got this!"
+        "today was tough, but hey, you still made it through. {taskDetails}—seriously, that’s something.",
+        "even if it doesn’t feel like much, you kept going today. {taskDetails}. tomorrow’s a new day.",
+        "you faced some hard stuff today, but you still managed to get {taskDetails} done. rest up, you got this!"
     ],
     "6-10": [
-        "you gave it your all even with low energy. {taskDetails}, and that’s pretty impressive.",
-        "it wasn’t easy today, but you made progress with {taskDetails}, even though your energy was low. keep your head up, tomorrow’s another chance.",
-        "you kept going and got {taskDetails} done despite low energy. you’ve got dedication, no doubt."
+        "you gave it your all. {taskDetails}, and that’s pretty impressive.",
+        "it wasn’t easy today, but you made progress with {taskDetails}. keep your head up, tomorrow’s another chance.",
+        "you kept going and got {taskDetails} done. you’ve got dedication, no doubt."
     ],
     "11-20": [
-        "despite everything, you made solid progress today. {taskDetails} with some energy—keep going, you’re on the right track.",
+        "despite everything, you made solid progress today. {taskDetails}—keep going, you’re on the right track.",
         "you’re moving forward, and that’s awesome! you still managed to {taskDetails}. keep it up!",
         "your effort today was great. you completed {taskDetails}, keep pushing forward!"
     ],
@@ -125,12 +125,12 @@ const motivationalMessages = {
         "you’re doing great! {taskDetails}—this is progress!"
     ],
     "61-80": [
-        "you crushed it today. {taskDetails} and you did it with solid energy. keep up the great work!",
-        "wow, you were on fire today! {taskDetails} and you did it all with great energy. nice job!",
-        "you gave solid energy today and knocked out {taskDetails}. keep that going!"
+        "you crushed it today. {taskDetails}, and you really made great progress. keep up the great work!",
+        "wow, you were on fire today! {taskDetails}, and you nailed it. nice job!",
+        "you gave your best today and knocked out {taskDetails}. keep that going!"
     ],
     "81-90": [
-        "incredible work! {taskDetails} and you’re almost there. keep pushing!",
+        "incredible work! {taskDetails}, and you’re almost there. keep pushing!",
         "you did amazing today! {taskDetails}, that’s so close to perfection!",
         "you’ve achieved so much. {taskDetails}—keep going!"
     ],
