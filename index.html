@@ -9,16 +9,19 @@
 <body>
     <div class="container">
         <div id="question-box" class="question-box">
-            <p id="question">What tasks are you working on today? (You can add multiple)</p>
-            <input type="text" id="task-input" placeholder="Enter a task" oninput="suggestTasks()" autocomplete="off">
-            <button onclick="addTask()">Add Task</button>
-            <ul id="suggestion-list"></ul>
+            <p id="question">What task are you working on today?</p>
+            <input type="text" id="task-input" placeholder="Enter your task" autocomplete="off">
+            <button id="submit-task-btn" onclick="addTask()">Submit Task</button>
             <div id="task-list"></div>
-            <button id="next-btn" onclick="nextQuestion()">Next</button>
+        </div>
+        <div id="result">
+            <h2>Your Motivation Score:</h2>
+            <p id="motivation-score"></p>
+            <h3>Personalized Motivational Message:</h3>
+            <p id="motivation-message"></p>
         </div>
     </div>
 
-    <!-- Hugging Face Transformers.js -->
     <script src="https://cdn.jsdelivr.net/npm/@huggingface/transformers@1.0.0/lib/index.js"></script>
     <script src="script.js"></script>
 </body>
