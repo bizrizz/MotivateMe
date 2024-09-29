@@ -169,42 +169,58 @@ function showEnergyBar(energy) {
     }, stepTime); // Control the speed of the bar and percentage increase
 }
 
+// Function to generate a motivational message based on task completion and energy
 function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
     let messageBankKey = getMessageBankKey(score);
     let taskDetails = tasks.map(task => getCompletionText(task.completion, task.name)).join(', ');
 
-    // Get the proper energy message
+    // Retrieve a random motivational message based on score
+    let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
+
+    // Add personalized energy messages based on the energy intervals
     let energyMessage = getEnergyMessage(energy);
 
-    // Replace placeholders in the message template
-    let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
+    // Replace placeholders with actual values
     message = message.replace("{taskDetails}", taskDetails);
     
-    // Make sure we don't show "even with just {energy}% energy" anymore
-    message = message.replace("{energy}", ''); // Clear the old placeholder
-    message += ` ${energyMessage}`;  // Add the correct energy message at the end
+    // Ensure only one energy message is included based on the user's actual energy level
+    message += ` ${energyMessage}`;
 
-    // Personalize for adversity and positive events
+    // Personalize the adversity and positive event part, only if applicable
     if (adversity) {
-        message += ` Even though you were feeling ${adversity}, you still pushed through.`;
+        message += ` despite feeling ${adversity}, you still pushed through.`;
     }
 
     if (positiveEvents) {
-        message += ` It’s cool how ${positiveEvents} kept you going!`;
+        message += ` it’s cool how ${positiveEvents} kept you going!`;
     }
 
-    // Display the final message
+    // Display the motivational message
     document.getElementById('motivation-message').innerText = message;
 
     // Show the energy bar
     showEnergyBar(energy);
 
-    // Trigger confetti and avatars
+    // Trigger confetti and avatars after showing message
     triggerConfetti();
     document.getElementById('left-avatar').style.display = 'block';
     document.getElementById('right-avatar').style.display = 'block';
 }
 
+// Function to get the appropriate energy-based message
+function getEnergyMessage(energy) {
+    if (energy <= 20) {
+        return "you had really low energy today, but you still managed to do something. that’s amazing.";
+    } else if (energy > 20 && energy <= 40) {
+        return "your energy was low, but you powered through some tasks. give yourself credit for that!";
+    } else if (energy > 40 && energy <= 60) {
+        return "you had decent energy today and made solid progress. keep this momentum going!";
+    } else if (energy > 60 && energy <= 80) {
+        return "your energy levels were good, and you crushed a lot of tasks. great job!";
+    } else {
+        return "your energy was off the charts today! you got so much done, keep up the awesome work!";
+    }
+}
 // Function to calculate the motivation score
 function calculateMotivationScore(adversityFactor, positiveEventBoost, finalEnergy, roadblocksInput, positiveEventsInput) {
     let totalCompletion = selectedTasks.reduce((total, task) => total + parseInt(task.completion), 0) / selectedTasks.length;
@@ -217,20 +233,6 @@ function calculateMotivationScore(adversityFactor, positiveEventBoost, finalEner
     // Generate motivational message based on the score and energy
     generateMotivationalMessage(Math.round(motivationScore), selectedTasks, roadblocksInput, positiveEventsInput, finalEnergy);
     triggerConfetti(); // Trigger confetti effect
-}
-
-function getEnergyMessage(energy) {
-    if (energy <= 20) {
-        return "you had really low energy today, but you still managed to do something. that’s amazing.";
-    } else if (energy > 20 && energy <= 40) {
-        return "your energy was low, but you powered through some tasks. give yourself credit for that!";
-    } else if (energy > 40 && energy <= 60) {
-        return "you had decent energy today and made solid progress. keep this momentum going!";
-    } else if (energy > 60 && energy <= 80) {
-        return "your energy levels were good, and you crushed a lot of tasks. great job!";
-    } else if (energy > 80) {  // Updated to handle energy > 80 without overlap
-        return "your energy was off the charts today! you got so much done, keep up the awesome work!";
-    }
 }
 
 // Helper function to map completion percentage to natural language descriptions
