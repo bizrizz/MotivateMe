@@ -176,6 +176,34 @@ const motivationalMessages = {
     ]
 };
 
+// Function to calculate the motivation score based on inputs
+function calculateMotivationScore(adversityFactor, positiveEventBoost, finalEnergy) {
+    let totalCompletion = selectedTasks.reduce((total, task) => total + parseInt(task.completion), 0) / selectedTasks.length;
+    let averageScore = selectedTasks.reduce((total, task) => total + parseInt(task.score), 0) / selectedTasks.length;
+
+    // Motivation score calculation based on task completion, adversity, energy, and task importance
+    let motivationScore = (totalCompletion * adversityFactor * positiveEventBoost * averageScore * (finalEnergy / 100)) / 100;
+
+    if (motivationScore < 10 && totalCompletion > 0) motivationScore = 10;  // Minimum 10% score if some work was done
+    if (motivationScore > 100) motivationScore = 100; // Cap at 100%
+
+    // Hide the motivation score from the UI
+    document.getElementById('motivation-score').style.display = 'none';
+
+    // Generate the motivational message based on score
+    generateMotivationalMessage(Math.round(motivationScore), selectedTasks, roadblocksInput, finalEnergy);
+
+    // Trigger the confetti effect after the message is shown
+    triggerConfetti();
+}
+
+// Function to trigger confetti effect
+function triggerConfetti() {
+    const confettiSettings = { target: 'confetti-canvas' };
+    const confetti = new ConfettiGenerator(confettiSettings);
+    confetti.render();
+}
+
 // Function to generate a motivational message based on the score, tasks, and adversity
 function generateMotivationalMessage(score, tasks, adversity, energy) {
     let messageBankKey = getMessageBankKey(score);
@@ -191,6 +219,7 @@ function generateMotivationalMessage(score, tasks, adversity, energy) {
         message += ` Despite feeling ${adversity}, you completed {taskDetails}. That’s amazing!`;
     }
 
+    // Display only the motivational message in the result box
     document.getElementById('motivation-message').innerText = message;
 }
 
