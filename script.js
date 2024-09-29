@@ -186,39 +186,41 @@ function getEnergyMessage(energy) {
     }
 }
 
-// Function to generate motivational message based on task completion and energy
+// Function to generate a motivational message based on task completion and energy
 function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
     let messageBankKey = getMessageBankKey(score);
     let taskDetails = tasks.map(task => getCompletionText(task.completion, task.name)).join(', ');
 
-    // Fetch the motivational message from the message bank
+    // Select a random motivational message
     let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
 
-    // Add energy-related message
+    // Get energy message based on the energy level
     let energyMessage = getEnergyMessage(energy);
 
-    // Replace placeholders in the message with actual values
-    message = message.replace("{taskDetails}", taskDetails);
-    
-    // Add the correct energy message only once based on energy level
-    message += ` ${energyMessage}`;
+    // Add only one energy message to avoid conflicting statements
+    message = message.replace("{energy}", energyMessage);
 
     // Personalize the adversity and positive event parts
     if (adversity) {
-        message += ` even though you were feeling ${adversity}, you still pushed through.`;
-    }
-    if (positiveEvents) {
-        message += ` it’s cool how ${positiveEvents} kept you going!`;
+        message += ` Even though you were feeling ${adversity}, you still pushed through.`;
     }
 
-    // Display the final motivational message
+    if (positiveEvents) {
+        message += ` It’s cool how ${positiveEvents} kept you going!`;
+    }
+
+    // Finalize and display the motivational message
     document.getElementById('motivation-message').innerText = message;
 
-    // Trigger confetti and show avatars
+    // Show the energy bar animation
+    showEnergyBar(energy);
+
+    // Trigger confetti and display avatars
     triggerConfetti();
     document.getElementById('left-avatar').style.display = 'block';
     document.getElementById('right-avatar').style.display = 'block';
 }
+
 // Function to calculate the motivation score
 function calculateMotivationScore(adversityFactor, positiveEventBoost, finalEnergy, roadblocksInput, positiveEventsInput) {
     let totalCompletion = selectedTasks.reduce((total, task) => total + parseInt(task.completion), 0) / selectedTasks.length;
