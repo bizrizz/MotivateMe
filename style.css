@@ -92,22 +92,20 @@ button:hover {
     z-index: 10;
 }
 
-//* Avatars on the sides of the container */
 .avatar {
-    width: 200px; /* Increase the width */
-    height: 200px; /* Add height to make it proportional */
+    width: 200px;
+    height: auto;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    display: none; /* Avatars are hidden by default */
+    bottom: 0;
+    display: none; /* Hidden by default */
 }
 
 #left-avatar {
-    left: -100px; /* Adjust to place outside the left side of the container */
+    left: -150px; /* Adjust to place outside the left side of the container */
 }
 
 #right-avatar {
-    right: -100px; /* Adjust to place outside the right side of the container */
+    right: -150px; /* Adjust to place outside the right side of the container */
 }
 
 /* Confetti canvas styling */
