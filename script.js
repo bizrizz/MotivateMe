@@ -160,25 +160,56 @@ function calculateMotivationScore(adversityFactor, positiveEventBoost, finalEner
     triggerConfetti(); // Trigger confetti effect
 }
 
-// Generate a personalized motivational message
+// Function to generate motivational message with natural language ranges
 function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
     let messageBankKey = getMessageBankKey(score);
-    let taskDetails = tasks.map(task => `${task.name}: ${task.completion}% completed`).join(', ');
+    
+    // Map completion percentages to natural language ranges
+    let taskDetails = tasks.map(task => {
+        let completionText = getCompletionText(task.completion, task.name);
+        return completionText;
+    }).join(', ');
 
+    // Select a random message from the bank
     let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
-    message = message.replace("{taskDetails}", taskDetails).replace("{energy}", energy);
 
+    // Replace placeholders with actual values
+    message = message.replace("{taskDetails}", taskDetails);
+    message = message.replace("{energy}", energy);
+
+    // Personalize the adversity and positive event part
     if (adversity) {
         message += ` even though you were feeling ${adversity}, you still pushed through.`;
     }
 
     if (positiveEvents) {
-        message += ` it’s cool how ${positiveEvents} kept you going!`;
+        message += ` and hey, ${positiveEvents} really gave you a boost today!`;
     }
 
+    // Display the motivational message
     document.getElementById('motivation-message').innerText = message;
-    document.getElementById('left-avatar').style.display = 'block'; // Show avatars
+
+    // Make avatars visible once the message is generated
+    document.getElementById('left-avatar').style.display = 'block';
     document.getElementById('right-avatar').style.display = 'block';
+    
+    // Trigger confetti after showing the message
+    triggerConfetti();
+}
+
+// Helper function to map completion percentage to natural language descriptions
+function getCompletionText(completion, taskName) {
+    if (completion <= 10) {
+        return `you didn’t get many ${taskName} done, but there's always tomorrow`;
+    } else if (completion > 10 && completion <= 30) {
+        return `you got some ${taskName} down, you can finish more tomorrow`;
+    } else if (completion > 30 && completion <= 60) {
+        return `you made decent progress on ${taskName}, keep it up`;
+    } else if (completion > 60 && completion <= 80) {
+        return `you got a good chunk of ${taskName} done, great job!`;
+    } else {
+        return `you crushed ${taskName}, almost finished it all!`;
+    }
 }
 
 // Function to get the message bank key based on score
