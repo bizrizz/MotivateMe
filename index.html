@@ -5,83 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MotivateMe - Motivation Tracker</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #000;
-            color: #fff;
-            margin: 0;
-            padding: 0;
+        /* Keep your existing body and container styles */
+
+        .motivation-box {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            width: 400px;
             padding: 20px;
-            border-radius: 10px;
             background-color: #1a1a1a;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-        }
-
-        .question-box {
-            background-color: #0000FF;
-            padding: 20px;
             border-radius: 10px;
             text-align: center;
+            position: relative;
         }
 
-        p {
-            font-size: 24px;
+        .avatar {
+            width: 80px; /* Adjust avatar size as needed */
+            margin: 0 10px; /* Space between the avatar and the message */
+            display: none; /* Avatars are hidden by default */
         }
 
-        input[type="text"] {
+        #motivation-message {
+            font-size: 26px; /* Increase font size */
+            font-weight: bold; /* Make the text stand out */
+            flex: 1; /* Ensure the message takes up available space */
+            color: white;
+        }
+
+        /* Confetti canvas styling */
+        canvas#confetti-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 10px;
-            margin-top: 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            background-color: #e0e0e0;
-            color: #333;
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #1a1a1a;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #333;
-        }
-
-        .task-item {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #333;
-            border-radius: 5px;
-            text-align: left;
-            color: #fff;
-        }
-
-        input[type="range"] {
-            width: 100%;
-        }
-
-        input[type="number"] {
-            width: 60px;
-            padding: 5px;
-        }
-
-        #result {
-            display: none;
+            height: 100%;
+            z-index: 1; /* Confetti stays behind other elements */
+            pointer-events: none; /* Ensure confetti doesn't block interactions */
         }
     </style>
 </head>
@@ -105,21 +63,15 @@
             <button id="final-next-btn" onclick="submitExtraQuestions()">Submit</button>
         </div>
 
-        <div id="result">
-            <p>Your Motivation Score:</p>
-            <div id="motivation-score"></div>
-            <p>Personalized Motivational Message:</p>
-            <div id="motivation-message"></div>
-        </div>
-
-
-        <div id="motivation-box" class="motivation-box">
-            <img id="left-avatar" src="left-dancing.gif" alt="Left Dancing Avatar" class="avatar">
-            <div id="motivation-message"></div>
-            <img id="right-avatar" src="right-dancing.gif" alt="Right Dancing Avatar" class="avatar">
-        </div>
+        <div id="result" style="display:none;">
+            <div class="motivation-box">
+                <img id="left-avatar" src="left-dancing.gif" alt="Left Dancing Avatar" class="avatar">
+                <div id="motivation-message"></div>
+                <img id="right-avatar" src="right-dancing.gif" alt="Right Dancing Avatar" class="avatar">
+            </div>
             <canvas id="confetti-canvas"></canvas> <!-- Confetti canvas -->
         </div>
+    </div>
     
     <!-- Confetti.js library -->
     <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.17/dist/index.min.js"></script>
