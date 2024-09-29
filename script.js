@@ -298,11 +298,44 @@ function calculateMotivationScore(adversityFactor, positiveEventBoost, finalEner
 }
 
 // Function to trigger confetti effect after showing the motivational message
+// Function to trigger confetti effect and display avatars
 function triggerConfetti() {
-    const confettiSettings = { target: 'confetti-canvas' }; // Target the canvas for confetti
-    const confetti = new ConfettiGenerator(confettiSettings); // Initialize confetti generator
-    confetti.render(); // Start the confetti animation
+    const confettiSettings = { target: 'confetti-canvas' };
+    const confetti = new ConfettiGenerator(confettiSettings);
+    confetti.render();
+
+    // Show the dancing avatars after the message is displayed
+    document.getElementById('left-avatar').style.display = 'block';
+    document.getElementById('right-avatar').style.display = 'block';
 }
+
+// Function to generate a motivational message based on the score, tasks, adversity, and energy
+function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
+    let messageBankKey = getMessageBankKey(score); // Fetch the correct message range
+    let taskDetails = tasks.map(task => `${task.name}: ${task.completion}% completed`).join(', ');
+
+    let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * 3)];
+
+    // Replace placeholders with actual values
+    message = message.replace("{taskDetails}", taskDetails);
+    message = message.replace("{energy}", energy);
+
+    // Add adversity and positive event-related messages
+    if (adversity) {
+        message += ` despite feeling ${adversity}, you pushed through.`;
+    }
+
+    if (positiveEvents) {
+        message += ` plus, ${positiveEvents} really boosted you today!`;
+    }
+
+    // Display the motivational message in the result box
+    document.getElementById('motivation-message').innerText = message;
+
+    // Trigger confetti and avatars after the message is shown
+    triggerConfetti();
+}
+
 
 // Function to generate a personalized motivational message based on the score, tasks, adversity, and energy
 function generateMotivationalMessage(score, tasks, adversity, energy) {
