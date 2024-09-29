@@ -4,159 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MotivateMe - Motivation Tracker</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #000;
-            color: #fff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            position: relative;
-        }
-
-        .container {
-            width: 400px;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: #1a1a1a;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            z-index: 10; /* Ensure container is above confetti */
-        }
-
-        .question-box {
-            background-color: #0000FF;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        p {
-            font-size: 24px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            background-color: #e0e0e0;
-            color: #333;
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #1a1a1a;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #333;
-        }
-
-        .task-item {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #333;
-            border-radius: 5px;
-            text-align: left;
-            color: #fff;
-        }
-
-        input[type="range"] {
-            width: 100%;
-        }
-
-        input[type="number"] {
-            width: 60px;
-            padding: 5px;
-        }
-
-        #result {
-            display: none;
-        }
-
-        .motivation-box {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            background-color: #1a1a1a;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .avatar {
-            width: 150px; /* Adjusted avatar size */
-            position: absolute;
-            bottom: 10px;
-            display: none; /* Avatars are hidden by default */
-        }
-
-        #left-avatar {
-            left: -160px; /* Positioned outside the container */
-        }
-
-        #right-avatar {
-            right: -160px; /* Positioned outside the container */
-        }
-
-        #motivation-message {
-            font-size: 26px; /* Increase font size */
-            font-weight: bold; /* Make the text stand out */
-            color: white;
-        }
-
-        /* Confetti canvas styling */
-        canvas#confetti-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; /* Confetti stays behind other elements */
-            pointer-events: none; /* Ensure confetti doesn't block interactions */
-        }
-
-        /* Energy bar container */
-        #energy-bar-container {
-            width: 100%;
-            background-color: #333;
-            border-radius: 10px;
-            margin-top: 20px;
-            overflow: hidden;
-            height: 25px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Energy bar fill */
-        #energy-bar-fill {
-            background-color: green;
-            width: 0;
-            height: 100%;
-            border-radius: 10px;
-            transition: width 5s ease-in-out;
-        }
-
-        .hidden {
-            display: none; /* Utility class for hiding elements */
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to the external CSS file -->
 </head>
 <body>
     <div class="container">
         <div id="question-box" class="question-box">
-            <p>What task are you working on today?</p>
+            <p>What task's are you working on today?</p>
             <input type="text" id="task-input" placeholder="Enter your task">
             <button id="add-task-btn" onclick="addTask()">Add Task</button>
             <div id="task-list"></div>
@@ -173,27 +26,29 @@
             <button id="final-next-btn" onclick="submitExtraQuestions()">Submit</button>
         </div>
 
-        <div id="result">
+        <div id="result" style="display: none;">
             <div id="motivation-box">
                 <div id="motivation-message"></div>
             </div>
         </div>
 
+        <!-- Avatars -->
         <img id="left-avatar" src="left-dancing.gif" alt="Left Avatar" class="avatar">
         <img id="right-avatar" src="right-dancing.gif" alt="Right Avatar" class="avatar">
 
-        <canvas id="confetti-canvas"></canvas>
-        
-        <!-- Energy bar section -->
-        <div id="energy-bar-container" class="hidden">
+        <!-- Energy bar container -->
+        <div id="energy-bar-container">
             <div id="energy-bar-fill"></div>
         </div>
+
+        <!-- Confetti -->
+        <canvas id="confetti-canvas"></canvas>
     </div>
-    
+
     <!-- Confetti.js library -->
     <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.17/dist/index.min.js"></script>
 
-    <!-- Your script.js -->
+    <!-- External JS -->
     <script src="script.js"></script>
 </body>
 </html>
