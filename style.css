@@ -1,3 +1,4 @@
+/* Body and container styling */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #000;
@@ -8,6 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden; /* Prevents the page from scrolling when confetti is triggered */
 }
 
 .container {
@@ -16,8 +18,11 @@ body {
     border-radius: 10px;
     background-color: #1a1a1a;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 10; /* Ensure the container is above the confetti canvas */
 }
 
+/* Question box styling */
 .question-box {
     background-color: #0000FF;
     padding: 20px;
@@ -29,6 +34,7 @@ p {
     font-size: 24px;
 }
 
+/* Input field styling */
 input[type="text"] {
     width: 100%;
     padding: 10px;
@@ -38,8 +44,11 @@ input[type="text"] {
     font-size: 18px;
     background-color: #e0e0e0;
     color: #333;
+    z-index: 10;
+    position: relative;
 }
 
+/* Button styling */
 button {
     margin-top: 20px;
     padding: 10px 20px;
@@ -49,12 +58,15 @@ button {
     border-radius: 5px;
     font-size: 18px;
     cursor: pointer;
+    z-index: 10;
+    position: relative;
 }
 
 button:hover {
     background-color: #333;
 }
 
+/* Task item styling */
 .task-item {
     margin-top: 10px;
     padding: 10px;
@@ -64,11 +76,24 @@ button:hover {
     color: #fff;
 }
 
+/* Range slider styling */
 input[type="range"] {
     width: 100%;
 }
 
+/* Number input styling */
 input[type="number"] {
     width: 60px;
     padding: 5px;
+}
+
+/* Confetti canvas styling */
+canvas#confetti-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Confetti stays behind other elements */
+    pointer-events: none; /* Ensure confetti doesn't block interactions */
 }
