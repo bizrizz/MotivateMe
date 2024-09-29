@@ -98,7 +98,7 @@
         <div id="extra-questions" style="display:none;">
             <p>What roadblocks did you face today?</p>
             <input type="text" id="roadblocks-input" placeholder="e.g., feeling sick, low energy">
-
+            
             <p>What positive events occurred?</p>
             <input type="text" id="positive-events-input" placeholder="e.g., felt energized, had good focus">
             
@@ -112,10 +112,15 @@
             <div id="motivation-message"></div>
         </div>
 
-        <!-- Confetti Canvas -->
-        <canvas id="confetti-canvas"></canvas>
-    </div>
 
+        <div id="motivation-box" class="motivation-box">
+            <img id="left-avatar" src="left-dancing.gif" alt="Left Dancing Avatar" class="avatar">
+            <div id="motivation-message"></div>
+            <img id="right-avatar" src="right-dancing.gif" alt="Right Dancing Avatar" class="avatar">
+        </div>
+            <canvas id="confetti-canvas"></canvas> <!-- Confetti canvas -->
+        </div>
+    
     <!-- Confetti.js library -->
     <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.17/dist/index.min.js"></script>
 
