@@ -1,6 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #000; /* Black background */
+    background-color: #000;
     color: #fff;
     margin: 0;
     padding: 0;
@@ -19,7 +19,7 @@ body {
 }
 
 .question-box {
-    background-color: #28a745; /* Green for the input box */
+    background-color: #28a745;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -55,8 +55,7 @@ button:hover {
     background-color: #333;
 }
 
-#category-suggestion {
-    margin-top: 10px;
+#task-list {
+    margin-top: 20px;
     color: #fff;
-    font-size: 16px;
 }
