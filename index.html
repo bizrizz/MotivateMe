@@ -97,18 +97,18 @@
         }
 
         .avatar {
-            width: 120px; /* Adjust avatar size */
+            width: 150px; /* Adjusted avatar size */
             position: absolute;
             bottom: 10px;
-            display: none; /* Hidden by default */
+            display: none; /* Avatars are hidden by default */
         }
 
         #left-avatar {
-            left: -150px; /* Position left avatar outside the container */
+            left: -160px; /* Positioned outside the container */
         }
 
         #right-avatar {
-            right: -150px; /* Position right avatar outside the container */
+            right: -160px; /* Positioned outside the container */
         }
 
         #motivation-message {
@@ -127,12 +127,36 @@
             z-index: 1; /* Confetti stays behind other elements */
             pointer-events: none; /* Ensure confetti doesn't block interactions */
         }
+
+        /* Energy bar container */
+        #energy-bar-container {
+            width: 100%;
+            background-color: #333;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+            height: 25px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Energy bar fill */
+        #energy-bar-fill {
+            background-color: green;
+            width: 0;
+            height: 100%;
+            border-radius: 10px;
+            transition: width 5s ease-in-out;
+        }
+
+        .hidden {
+            display: none; /* Utility class for hiding elements */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="question-box" class="question-box">
-            <p>What task's are you working on today?</p>
+            <p>What task are you working on today?</p>
             <input type="text" id="task-input" placeholder="Enter your task">
             <button id="add-task-btn" onclick="addTask()">Add Task</button>
             <div id="task-list"></div>
@@ -159,6 +183,11 @@
         <img id="right-avatar" src="right-dancing.gif" alt="Right Avatar" class="avatar">
 
         <canvas id="confetti-canvas"></canvas>
+        
+        <!-- Energy bar section -->
+        <div id="energy-bar-container" class="hidden">
+            <div id="energy-bar-fill"></div>
+        </div>
     </div>
     
     <!-- Confetti.js library -->
