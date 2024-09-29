@@ -8,57 +8,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>Motivation Tracker</h1>
-        <form id="trackerForm">
-            <div class="task-input">
-                <label for="task">Task Name</label>
-                <input type="text" id="task" name="task" required>
-            </div>
-            
-            <div class="importance-input">
-                <label for="importance">Task Importance (1-5)</label>
-                <input type="number" id="importance" name="importance" min="1" max="5" required>
-            </div>
-
-            <div class="completion-input">
-                <label for="completion">Task Completion (%)</label>
-                <input type="number" id="completion" name="completion" min="0" max="100" required>
-            </div>
-
-            <div class="satisfaction-input">
-                <label for="satisfaction">Satisfaction with Your Effort (1-5)</label>
-                <input type="number" id="satisfaction" name="satisfaction" min="1" max="5" required>
-            </div>
-
-            <div class="adversity-input">
-                <label for="adversity">Did you push through adversity today?</label>
-                <select id="adversity" name="adversity">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="life-event-input">
-                <label for="life-event-type">Select Life Event</label>
-                <select id="life-event-type" name="life-event-type">
-                    <option value="none">None</option>
-                    <option value="sickness">Sickness</option>
-                    <option value="social">Social Event</option>
-                    <option value="sports">Sports/Physical Activity</option>
-                    <option value="emergency">Emergency</option>
-                    <option value="clubs">Club/Extracurricular Meeting</option>
-                    <option value="part-time job">Part-Time Job</option>
-                    <option value="mental-health">Mental Health Struggles</option>
-                    <option value="family">Family Responsibility</option>
-                </select>
-            </div>
-
-            <button type="submit">Calculate Motivation Score</button>
-        </form>
-
-        <div id="result">
-            <h2>Your Motivation Score:</h2>
-            <p id="motivation-score"></p>
+        <div id="question-box" class="question-box">
+            <p id="question">What task are you working on today?</p>
+            <input type="text" id="task" placeholder="Enter your task" oninput="categorizeTask()" required>
+            <div id="category-suggestion"></div>
+            <button id="next-btn" onclick="nextQuestion()">Next</button>
         </div>
     </div>
 
