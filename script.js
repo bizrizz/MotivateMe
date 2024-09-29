@@ -93,7 +93,6 @@ function nextQuestion() {
     document.getElementById("next-btn").style.display = "none";
 }
 
-// Submit roadblocks and positive events, then calculate motivation score and energy
 function submitExtraQuestions() {
     const roadblocksInput = document.getElementById("roadblocks-input").value;
     const positiveEventsInput = document.getElementById("positive-events-input").value;
@@ -108,6 +107,9 @@ function submitExtraQuestions() {
     // Calculate energy and motivation score
     let finalEnergy = calculateEnergy();
     calculateMotivationScore(adversityFactor, positiveEventBoost, finalEnergy);
+
+    // Pass roadblocksInput (adversity) to the motivational message
+    generateMotivationalMessage(motivationScore, selectedTasks, roadblocksInput, finalEnergy);
 }
 
 // Function to calculate the motivation score based on inputs
@@ -216,10 +218,10 @@ function generateMotivationalMessage(score, tasks, adversity, energy) {
     message = message.replace("{energy}", energy);
 
     if (adversity) {
-        message += ` Despite feeling ${adversity}, you completed {taskDetails}. That’s amazing!`;
+        message += ` Despite feeling ${adversity}, you completed ${taskDetails}. That’s amazing!`;
     }
 
-    // Display only the motivational message in the result box
+    // Display the motivational message in the result box
     document.getElementById('motivation-message').innerText = message;
 }
 
