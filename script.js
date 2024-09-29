@@ -226,9 +226,14 @@ function triggerConfetti() {
     confetti.render();
 }
 
-// Function to generate a motivational message based on the score, tasks, and adversity
 function generateMotivationalMessage(score, tasks, adversity, energy) {
+    console.log("Motivation score:", score);  // Debugging line
+    console.log("Adversity:", adversity);     // Debugging line
+    console.log("Energy:", energy);           // Debugging line
+
     let messageBankKey = getMessageBankKey(score);
+    console.log("Message Bank Key:", messageBankKey);  // Debugging line
+
     let taskDetails = tasks.map(task => `${task.name}: ${task.completion}% completed`).join(', ');
 
     let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * 3)];
@@ -236,6 +241,7 @@ function generateMotivationalMessage(score, tasks, adversity, energy) {
     // Replace placeholders with actual values
     message = message.replace("{taskDetails}", taskDetails);
     message = message.replace("{energy}", energy);
+    console.log("Generated message:", message); // Debugging line
 
     if (adversity) {
         message += ` Despite feeling ${adversity}, you completed ${taskDetails}. That’s amazing!`;
@@ -243,6 +249,7 @@ function generateMotivationalMessage(score, tasks, adversity, energy) {
 
     // Display the motivational message in the result box
     document.getElementById('motivation-message').innerText = message;
+    console.log("Message displayed in HTML"); // Debugging line
 }
 
 function getMessageBankKey(score) {
