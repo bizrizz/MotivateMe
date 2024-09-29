@@ -55,7 +55,20 @@ button:hover {
     background-color: #333;
 }
 
-#task-list {
-    margin-top: 20px;
+.task-item {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 5px;
+    text-align: left;
     color: #fff;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+input[type="number"] {
+    width: 60px;
+    padding: 5px;
 }
