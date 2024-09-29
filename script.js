@@ -160,18 +160,18 @@ function calculateMotivationScore(adversityFactor, positiveEventBoost, finalEner
     triggerConfetti(); // Trigger confetti effect
 }
 
-// Function to get energy-based message based on the energy level
+// Energy message based on energy level
 function getEnergyMessage(energy) {
     if (energy <= 20) {
-        return "your predicted energy for today was really low, but you still managed to do something. that’s amazing.";
+        return "you had really low energy today, but you still managed to do something. that’s amazing.";
     } else if (energy > 20 && energy <= 40) {
-        return "your predicted energy for today was low, but you powered through some tasks. give yourself credit for that!";
+        return "your energy was low, but you powered through some tasks. give yourself credit for that!";
     } else if (energy > 40 && energy <= 60) {
-        return "your predicted energy for today was decent and you made solid progress. keep this momentum going!";
+        return "you had decent energy today and made solid progress. keep this momentum going!";
     } else if (energy > 60 && energy <= 80) {
-        return "your predicted energy for today was good, and you crushed a lot of tasks. great job!";
+        return "your energy levels were good, and you crushed a lot of tasks. great job!";
     } else {
-        return "your predicted energy for today was off the charts! you got so much done, keep up the awesome work!";
+        return "your energy was off the charts today! you got so much done, keep up the awesome work!";
     }
 }
 
@@ -190,11 +190,21 @@ function getCompletionText(completion, taskName) {
     }
 }
 
+// Function to display energy bar with animation
+function showEnergyBar(energy) {
+    const energyBar = document.getElementById('energy-bar-fill');
+    energyBar.style.width = '0%'; // Reset the bar first
+    setTimeout(() => {
+        energyBar.style.transition = 'width 5s'; // Smooth animation over 5 seconds
+        energyBar.style.width = `${energy}%`; // Fill the bar based on energy level
+    }, 100); // Delay to trigger the animation
+}
+
+// Function to generate a motivational message based on task completion and energy
 function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
     let messageBankKey = getMessageBankKey(score);
     let taskDetails = tasks.map(task => getCompletionText(task.completion, task.name)).join(', ');
 
-    // Select a random message from the bank for task completion
     let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
 
     // Add personalized energy messages based on the energy intervals
@@ -213,22 +223,19 @@ function generateMotivationalMessage(score, tasks, adversity, positiveEvents, en
         message += ` it’s cool how ${positiveEvents} kept you going!`;
     }
 
-    // Only add the energy message if it doesn't conflict with the task message
-    if (energy <= 40 && tasks.every(task => task.completion < 50)) {
-        message += ` even with low energy and some challenges, you made it through—nice work!`;
-    } else {
-        message += ` ${energyMessage}`;
-    }
+    // Add the energy message at the end
+    message += ` ${energyMessage}`;
 
     // Display the motivational message
     document.getElementById('motivation-message').innerText = message;
 
-    // Make avatars visible once the message is generated
+    // Show the energy bar
+    showEnergyBar(energy);
+
+    // Trigger confetti and avatars after showing message
+    triggerConfetti();
     document.getElementById('left-avatar').style.display = 'block';
     document.getElementById('right-avatar').style.display = 'block';
-
-    // Trigger confetti after showing the message
-    triggerConfetti();
 }
 
 // Function to get the message bank key based on score
