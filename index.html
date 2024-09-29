@@ -23,6 +23,8 @@
             border-radius: 10px;
             background-color: #1a1a1a;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 10; /* Ensure the container is above the confetti canvas */
         }
 
         .question-box {
@@ -36,7 +38,7 @@
             font-size: 24px;
         }
 
-        input[type="text"] {
+        input[type="text"], input[type="number"] {
             width: 100%;
             padding: 10px;
             margin-top: 20px;
@@ -75,29 +77,38 @@
             width: 100%;
         }
 
-        input[type="number"] {
-            width: 60px;
-            padding: 5px;
-        }
-
         #result {
             display: none;
         }
 
+        /* Motivation box styling */
         .motivation-box {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
             background-color: #1a1a1a;
+            padding: 20px;
             border-radius: 10px;
             text-align: center;
+            position: relative;
+            z-index: 10;
         }
 
+        /* Avatars on the sides of the container */
         .avatar {
-            width: 80px; /* Adjust avatar size as needed */
-            margin: 0 10px; /* Space between the avatar and the message */
-            display: none; /* Avatars are hidden by default */
+            width: 80px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none; /* Initially hidden */
+        }
+
+        #left-avatar {
+            left: -100px; /* Place outside the left side of the container */
+        }
+
+        #right-avatar {
+            right: -100px; /* Place outside the right side of the container */
         }
 
         #motivation-message {
@@ -121,6 +132,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- Question section -->
         <div id="question-box" class="question-box">
             <p>What task are you working on today?</p>
             <input type="text" id="task-input" placeholder="Enter your task">
@@ -129,28 +141,28 @@
             <button id="next-btn" style="display:none;" onclick="nextQuestion()">Next</button>
         </div>
 
+        <!-- Extra questions section -->
         <div id="extra-questions" style="display:none;">
             <p>What roadblocks did you face today?</p>
             <input type="text" id="roadblocks-input" placeholder="e.g., feeling sick, low energy">
-            
+
             <p>What positive events occurred?</p>
             <input type="text" id="positive-events-input" placeholder="e.g., felt energized, had good focus">
-            
+
             <button id="final-next-btn" onclick="submitExtraQuestions()">Submit</button>
         </div>
 
-        <div class="container">
-    <div id="result">
-        <div id="motivation-box">
+        <!-- Result section -->
+        <div id="result" class="motivation-box">
             <img id="left-avatar" src="left-dancing.gif" alt="Left Avatar" class="avatar">
             <div id="motivation-message"></div>
             <img id="right-avatar" src="right-dancing.gif" alt="Right Avatar" class="avatar">
         </div>
-    </div>
-    <canvas id="confetti-canvas"></canvas>
-</div>
 
-    
+        <!-- Confetti Canvas -->
+        <canvas id="confetti-canvas"></canvas>
+    </div>
+
     <!-- Confetti.js library -->
     <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.17/dist/index.min.js"></script>
 
