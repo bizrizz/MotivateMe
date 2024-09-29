@@ -190,19 +190,19 @@ function getCompletionText(completion, taskName) {
     }
 }
 
-// Function to generate a personalized motivational message and display avatars
 function generateMotivationalMessage(score, tasks, adversity, positiveEvents, energy) {
+    let messageBankKey = getMessageBankKey(score);
     let taskDetails = tasks.map(task => getCompletionText(task.completion, task.name)).join(', ');
 
     // Select a random message from the bank for task completion
-    let message = motivationalMessages[score][Math.floor(Math.random() * motivationalMessages[score].length)];
+    let message = motivationalMessages[messageBankKey][Math.floor(Math.random() * motivationalMessages[messageBankKey].length)];
 
     // Add personalized energy messages based on the energy intervals
     let energyMessage = getEnergyMessage(energy);
 
     // Replace placeholders with actual values
     message = message.replace("{taskDetails}", taskDetails);
-    message = message.replace("{energy}", energyMessage);
+    message = message.replace("{energy}", energy);
 
     // Personalize the adversity and positive event part
     if (adversity) {
@@ -210,7 +210,14 @@ function generateMotivationalMessage(score, tasks, adversity, positiveEvents, en
     }
 
     if (positiveEvents) {
-        message += ` it's cool how ${positiveEvents} kept you going!`;
+        message += ` it’s cool how ${positiveEvents} kept you going!`;
+    }
+
+    // Only add the energy message if it doesn't conflict with the task message
+    if (energy <= 40 && tasks.every(task => task.completion < 50)) {
+        message += ` even with low energy and some challenges, you made it through—nice work!`;
+    } else {
+        message += ` ${energyMessage}`;
     }
 
     // Display the motivational message
@@ -220,7 +227,7 @@ function generateMotivationalMessage(score, tasks, adversity, positiveEvents, en
     document.getElementById('left-avatar').style.display = 'block';
     document.getElementById('right-avatar').style.display = 'block';
 
-    // Trigger confetti after showing message
+    // Trigger confetti after showing the message
     triggerConfetti();
 }
 
