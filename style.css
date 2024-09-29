@@ -1,3 +1,4 @@
+/* Body and container styling */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #000;
@@ -21,6 +22,73 @@ body {
     z-index: 10; /* Ensure the container is above the confetti canvas */
 }
 
+/* Question box styling */
+.question-box {
+    background-color: #0000FF;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+p {
+    font-size: 24px;
+    color: white; /* Ensure the text is visible on the dark background */
+}
+
+/* Input field styling */
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    background-color: #e0e0e0;
+    color: #333;
+    z-index: 10;
+    position: relative;
+}
+
+/* Button styling */
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+    position: relative;
+}
+
+button:hover {
+    background-color: #333;
+}
+
+/* Task item styling */
+.task-item {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 5px;
+    text-align: left;
+    color: #fff;
+}
+
+/* Range slider styling */
+input[type="range"] {
+    width: 100%;
+}
+
+/* Number input styling */
+input[type="number"] {
+    width: 60px;
+    padding: 5px;
+}
+
+/* Motivation box styling */
 .motivation-box {
     display: flex;
     justify-content: center;
@@ -32,12 +100,14 @@ body {
     position: relative;
 }
 
+/* Avatar styling */
 .avatar {
     width: 80px; /* Adjust avatar size as needed */
     margin: 0 10px; /* Space between the avatar and the message */
     display: none; /* Avatars are hidden by default */
 }
 
+/* Message styling */
 #motivation-message {
     font-size: 26px; /* Increase font size */
     font-weight: bold; /* Make the text stand out */
